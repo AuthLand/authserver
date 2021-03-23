@@ -24,6 +24,7 @@ usersRouter.post("/signin", basicAuth, (req, res) => {
       user: req.user,
       token: req.user.token,
     };
+    console.log(req.user);
     res.status(200).json(userInfo);
   } catch (e) {
     res.status(403).send("Error Signing in");

@@ -3,20 +3,20 @@
   import base64 from "base-64";
 
   import { user } from "../store.js";
+  import { push } from 'svelte-spa-router';
 
   export let username = "";
   export let password = "";
   export let button = true;
 
   async function signup() {
-    console.log("IM INSIDE THE SIGNUP");
     let userInfo = {
       username: username,
       password: password,
     };
     let result = await axios.post("http://localhost:3030/signup", userInfo);
-    console.log("user", result);
-    $user = result;
+    $user = result.data.user;
+    return push('/mypage');
   }
 
   async function signin() {
@@ -25,14 +25,14 @@
     let result = await axios.post("http://localhost:3030/signin", base, {
       headers: { Authorization: `Basic ${base}` },
     });
-    console.log("SIGNED IN USER", result);
+    $user = result.data.user;
+    return push('/mypage');
   }
 
   function changeButton() {
     button = !button;
   }
 </script>
-
 <div
   class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
 >

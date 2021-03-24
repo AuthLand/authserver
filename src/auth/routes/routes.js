@@ -31,8 +31,29 @@ usersRouter.post("/signin", basicAuth, (req, res) => {
   }
 });
 
-usersRouter.get("/area51", bearerAuth, ACL("create"), (req, res) => {
-  res.status(200).send("Welcome to the Secret Area");
+usersRouter.get("/admin", bearerAuth, ACL("delete"), (req, res) => {
+  res.status(200).json({message: "Access Granted"});
 });
+
+usersRouter.get('/get-users', async (req, res) => {
+  try{
+    let users = await User.find({});
+    res.status(200).json(users);
+  } catch(e) {
+    console.log(e.message);
+    res.status(403).send('Error getting all users')
+  }
+});
+
+usersRouter.post('/logout', (req, res) => {
+  
+  
+})
+
+usersRouter.delete('/delete/:id', async (req, res) => {
+  let deleted = await User.deleteOne({_id: req.params.id });
+
+  res.status(200).json({message:"User deleted", user: deleted})
+})
 
 module.exports = usersRouter;

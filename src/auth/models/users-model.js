@@ -31,7 +31,7 @@ UserSchema.virtual("access").get(function () {
   let acl = {
     user: ["read"],
     editor: ["read", "create", "update"],
-    admin: ["read", "create", "update"],
+    admin: ["read", "create", "update", "delete"],
   };
   return acl[this.role];
 });
